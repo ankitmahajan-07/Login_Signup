@@ -1,0 +1,107 @@
+{% load static %}
+
+<html>
+	<head>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<style type="text/css">
+        input{
+            margin-top: 13px;
+            box-shadow: 1px 1px 2px 2px lightblue;
+            font-family:palatino linotype;
+        }
+        label
+        {
+            font-family:palatino linotype;
+        }
+    </style>
+	</head>
+	<body style="background-image: url('{%static 'pic2.jpeg' %}');">
+        <div id="signup_div" class="container" style="margin-top:70px;display:none;">
+            <form method="post" action="/login">{% csrf_token %}
+                <div class="row flex-row-reverse">
+                    <div class="col-md-4" align="center">
+                        <input name="name" placeholder="Name" class="form-control" style="font-size: 20px;" value="{{params.0}}" required>
+                        <input name="uname" placeholder="Username" class="form-control" style="font-size: 20px;" value="{{params.1}}" required>
+                        <input name="email" placeholder="Email" class="form-control" style="font-size: 20px;" value="{{params.2}}" required>
+                        <input type="password" name="password" placeholder="Password" class="form-control" style="font-size: 20px;" value="{{params.3}}" required>
+                        <input type="password" name="confpwd" placeholder="Confirm Password" class="form-control" style="font-size: 20px;" value="{{params.4}}" required>
+                        <input type="number" name="mobile" placeholder="Mobile" class="form-control" style="font-size: 20px;" value="{{params.5}}" required>
+                        <input type="date" name="dob" class="form-control" style="font-size: 20px;" value="{{params.6}}" required>
+                        <div class="form-check-inline col-md-4">
+                          <label class="form-check-label" style="font-size: 25px;font-family: palatino linotype">
+                            <input type="radio" class="form-check-input" name="optradio" value="male" style="font-size: 20px;" {{params.7}} required>&nbsp;Male
+                          </label>
+                        </div>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <div class="form-check-inline col-md-5">
+                          <label class="form-check-label" style="font-size: 25px;font-family: palatino linotype">
+                            <input type="radio" class="form-check-input" value="female" name="optradio" style="font-size: 20px;" {{params.8}} required>&nbsp;Female
+                          </label>
+                        </div><br>
+
+                        <div class="form-check-inline col-md-11">
+                          <label class="form-check-label">
+                            <input type="checkbox" name="tc" class="form-check-input" value="" checked required>Read All <a href="#">Terms and Conditions</a>
+                          </label>
+                        </div>
+
+                        <input type="submit" name="signup" value="Sign Up" style="font-size: 20px;" class="btn btn-primary col-md-12">
+                        <h6 style="margin-top:5px;">Already have an Account? <a href="#" onclick="show_login()">LOGIN HERE</a></h6>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+                                <!--  Log In Div  -->
+
+    <div id="login_div" class="container" style="margin-top:150px;" align="center">
+        <form method="post" action="/">{% csrf_token %}
+            <div class="col-md-4">
+                <input name="email" id="email_login" placeholder="Email" class="form-control" style="font-size: 20px;">
+                <input name="password" type="password" id="Password_login" placeholder="Password" class="form-control" style="font-size: 20px;">
+                <div class="form-check-inline col-md-11" style="margin-top:10px;">
+                    <label class="form-check-label">
+                        <input type="checkbox" name="check" class="form-check-input" checked><label style="font-size:20px;">Remember Me?</label>
+                    </label>
+                </div>
+                <input type="submit" name="login" value="Log In" style="font-size: 25px;" class="btn btn-primary col-md-12">
+                <h6 align="right" style="margin-top:5px;">Don't have an Account? <a href="#" onclick="show_signup()">SignUp HERE</a></h6>
+            </div>
+        </form>
+        <div class="container col-md-4" align="center">
+            <button class="btn col-md-12" style="background-color: #3B5998;border-radius:15px;">
+                <a href="{% url 'social:begin' 'facebook' %}" style="text-decoration:none;"><h4 style="color:white;">Login with Facebook</h4></a>
+            </button>
+
+            <button class="btn col-md-12" style="background-color: #db5614;margin-top:10px;border-radius:15px;">
+                <a href="{% url 'social:begin' 'google-oauth2' %}" style="text-decoration:none;"><h4 style="color:white;">Login with Google</h4></a>
+            </button>
+        </div>
+    </div>
+    {% for message in messages %}
+        <script>
+            alert('{{message}}');
+            var a = "{{message}}";
+            if(a == "You are successfully signed up.")
+            {
+                document.getElementById("signup_div").style="display:none;margin-top:70px";
+                document.getElementById("login_div").style="display:block;margin-top:150px";
+            }
+        </script>
+    {% endfor %}
+
+    </body>
+
+    <script>
+        function show_login()
+        {
+            document.getElementById("signup_div").style="display:none;margin-top:70px";
+            document.getElementById("login_div").style="display:block;margin-top:150px";
+        }
+
+        function show_signup()
+        {
+            document.getElementById("signup_div").style="display:block;margin-top:70px";
+            document.getElementById("login_div").style="display:none;margin-top:150px";
+        }
+    </script>
+</html>
